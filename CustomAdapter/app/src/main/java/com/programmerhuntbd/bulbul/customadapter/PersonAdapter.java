@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.R.attr.name;
+
 /**
  * Created by bulbul on 6/23/2018.
  */
@@ -27,19 +29,35 @@ public class PersonAdapter extends ArrayAdapter<ContactPerson>{
         this.persons=persons;
     }
 
+    class ViewHolder{
+        TextView name;
+        TextView phone;
+        ImageView image;
+
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView=inflater.inflate(R.layout.row_layout,parent,false);
+        ViewHolder holder;
 
-        TextView name = (TextView) convertView.findViewById(R.id.studentName);
-        TextView phone = (TextView) convertView.findViewById(R.id.phoneNumber);
-        ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
+        if(convertView==null){
+            holder = new ViewHolder();
+            convertView=inflater.inflate(R.layout.row_layout,parent,false);
+             holder.name = (TextView) convertView.findViewById(R.id.studentName);
+             holder.phone = (TextView) convertView.findViewById(R.id.phoneNumber);
+             holder.image = (ImageView) convertView.findViewById(R.id.imageView);
 
-        name.setText(persons.get(position).getPersonName());
-        phone.setText(persons.get(position).getPhoneNumber());
+            convertView.setTag(holder);
+        }else{
+            holder=(ViewHolder) convertView.getTag();
+        }
+
+
+        holder.name.setText(persons.get(position).getPersonName());
+        holder.phone.setText(persons.get(position).getPhoneNumber());
         return convertView;
     }
 }
